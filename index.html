@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Komal Umak | Learning Dashboard</title>
+
+<style>
+:root {
+  --blue: #07558c;
+  --light-blue: #2fa7dc;
+  --background: #f2f7fc;
+  --white: #ffffff;
+  --text: #243447;
+  --green: #198754;
+  --orange: #f0a43c;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--background);
+  color: var(--text);
+}
+
+header {
+  background: linear-gradient(135deg, #07558c, #168bc2);
+  color: white;
+  padding: 32px 15px;
+  text-align: center;
+}
+
+header h1 { margin: 0 0 10px; }
+
+header p { margin: 5px; }
+
+.container {
+  max-width: 1150px;
+  margin: 25px auto;
+  padding: 0 16px;
+}
+
+.panel {
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 12px #0000000c;
+}
+
+.panel h2, .panel h3 {
+  color: var(--blue);
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.stat {
+  padding: 22px 12px;
+  text-align: center;
+  background: var(--light-blue);
+  color: white;
+  border-radius: 13px;
+}
+
+.stat h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: normal;
+}
+
+.stat p {
+  margin: 12px 0 0;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.chart-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+}
+
+.chart-layout .panel { text-align: center; }
+
+.progress-circle {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: conic-gradient(
+    var(--light-blue) 0deg,
+    #dce5ee 0deg
+  );
+  position: relative;
+}
+
+.progress-circle::before {
+  content: "";
+  position: absolute;
+  width: 135px;
+  height: 135px;
+  background: white;
+  border-radius: 50%;
+}
+
+.progress-text {
+  z-index: 1;
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--blue);
+}
+
+.bar-chart {
+  display: flex;
+  align-items: end;
+  gap: 5px;
+  height: 180px;
+  padding: 10px 5px 0;
+  overflow-x: auto;
+  border-bottom: 1px solid #dce5ee;
+}
+
+.bar-item {
+  min-width: 18px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  flex-direction: column;
+  height: 100%;
+}
+
+.bar {
+  width: 100%;
+  max-width: 26px;
+  min-height: 3px;
+  background: var(--light-blue);
+  border-radius: 4px 4px 0 0;
+}
+
+.bar-label {
+  font-size: 9px;
+  margin-top: 5px;
+  white-space: nowrap;
+  color: #536678;
+}
+
+.search {
+  width: 100%;
+  border: 1px solid #cbd7e2;
+  border-radius: 9px;
+  padding: 13px;
+  font-size: 16px;
+  margin-bottom: 18px;
+}
+
+.day {
+  background: white;
+  border-radius: 12px;
+  border-left: 5px solid var(--light-blue);
+  margin-bottom: 14px;
+  padding: 17px;
+  box-shadow: 0 3px 10px #00000009;
+}
+
+.day summary {
+  color: var(--blue);
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.emotion {
+  display: inline-block;
+  background: #e7f5fc;
+  padding: 7px 12px;
+  border-radius: 18px;
+  margin: 15px 0;
+  font-size: 13px;
+}
+
+.day h4 {
+  color: #0879b0;
+  margin: 16px 0 7px;
+}
+
+.day ul {
+  padding-left: 22px;
+  line-height: 1.7;
+}
+
+.takeaway {
+  background: #eaf7ef;
+  padding: 13px;
+  border-radius: 8px;
+  line-height: 1.6;
+}
+
+.challenge {
+  background: #fff5e7;
+  padding: 13px;
+  border-radius: 8px;
+  line-height: 1.6;
+}
+
+.missing {
+  color: #687887;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+footer {
+  text-align: center;
+  color: #687887;
+  padding: 25px;
+  font-size: 13px;
+}
+
+@media(max-width: 700px) {
+  .summary { grid-template-columns: 1fr; }
+  .chart-layout { grid-template-columns: 1fr; }
+  header h1 { font-size: 23px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Individual Learning Dashboard</h1>
+  <p>Komal Umak | Gandhi Fellow | Batch 19</p>
+  <p>Piramal Swasthya, Patna</p>
+</header>
+
+<main class="container">
+
+  <section class="panel">
+    <h2>My Learning Journey</h2>
+    <p><b>Reporting period:</b> 11 September – 13 October 2026</p>
+    <p>
+      A record of my field experiences, learning, reflections,
+      challenges and key takeaways during my fellowship journey.
+    </p>
+  </section>
+
+  <section class="summary">
+    <div class="stat">
+      <h3>Total Days</h3>
+      <p id="total">33</p>
+    </div>
+
+    <div class="stat">
+      <h3>Learning Records</h3>
+      <p id="recorded">0</p>
+    </div>
+
+    <div class="stat">
+      <h3>Awaiting Entry</h3>
+      <p id="missing">0</p>
+    </div>
+  </section>
+
+  <section class="chart-layout">
+
+    <div class="panel">
+      <h3>Daily Learning Overview</h3>
+      <div class="bar-chart" id="bars"></div>
+      <p style="font-size:12px;color:#687887">
+        Hover over a bar to see the date and learning-point count.
+      </p>
+    </div>
+
+    <div class="panel">
+      <h3>Record Completion</h3>
+      <div class="progress-circle" id="circle">
+        <div class="progress-text" id="percentage">0%</div>
+      </div>
+      <p id="coverageText">0 of 33 days recorded</p>
+      <p>Blue = recorded entries</p>
+      <p>Grey = awaiting entry</p>
+    </div>
+
+  </section>
+
+  <h2 style="color:#07558c">Daily Learning Records</h2>
+
+  <input
+    id="search"
+    class="search"
+    type="search"
+    placeholder="Search dates, activities or learning..."
+  >
+
+  <div id="records"></div>
+
+</main>
+
+<footer>
+  Individual Learning of the Day | Gandhi Fellowship Batch 19
+</footer>
+
+<script>
+const entries = {
+  "2026-09-16": {
+    emotion: "😊",
+    activity: [
+      "Visited AAM Kurkuri to collect the UDID number of a person affected by Filaria."
+    ],
+    learning: [
+      "Learned the importance of documentation for people affected by Filaria.",
+      "Observed the management of the health facility during my first visit to this AAM."
+    ],
+    takeaway: "Accurate information and proper documentation help connect people with relevant services."
+  },
+
+  "2026-09-18": {
+    emotion: "😊",
+    activity: [
+      "Participated in discussions related to NQAS and health-system improvement."
+    ],
+    learning: [
+      "NQAS focuses on improving healthcare quality.",
+      "Important areas include patient rights, cleanliness, water, clinical care, infection control, quality management and outcomes.",
+      "Quality assessment takes place at different levels."
+    ],
+    takeaway: "Quality improvement requires attention to patient experience and healthcare standards.",
+    challenge: "Further clarity was needed on some aspects of NQAS."
+  },
+
+  "2026-09-23": {
+    emotion: "😊",
+    activity: ["Revised communicable diseases."],
+    learning: [
+      "Revisited key concepts related to communicable diseases."
+    ],
+    takeaway: "Regular revision strengthens understanding of health topics."
+  },
+
+  "2026-09-24": {
+    emotion: "😊",
+    activity: ["Attended a Patna office meeting on IHIP and monthly planning."],
+    learning: [
+      "Learned about the IHIP portal.",
+      "Understood the importance of proper monthly planning."
+    ],
+    takeaway: "Planning and accurate portal-related work support effective health-system activities."
+  },
+
+  "2026-09-25": {
+    emotion: "😊",
+    activity: ["Participated in monthly planning activities."],
+    learning: [
+      "Learned about preparing and organising monthly plans."
+    ],
+    takeaway: "A structured plan helps organise priorities and field responsibilities."
+  },
+
+  "2026-09-28": {
+    emotion: "😊 Happy",
+    activity: [
+      "Visited Digha for Night Blood Survey (NBS).",
+      "Experienced the practical implementation of NBS for the first time."
+    ],
+    learning: [
+      "Understood how the field process connects with the training received.",
+      "Observed good community participation on the first day."
+    ],
+    takeaway: "Community participation is important for effective field implementation."
+  },
+
+  "2026-09-29": {
+    emotion: "😊",
+    activity: [
+      "Continued NBS activities at Digha.",
+      "The State Team visited the field."
+    ],
+    learning: [
+      "Learned about selecting an appropriate lancet.",
+      "Understood the importance of community engagement.",
+      "When people do not come to the designated location, the LT or team may need to approach households."
+    ],
+    takeaway: "Field teams need to adapt their approach to encourage participation."
+  },
+
+  "2026-09-30": {
+    emotion: "😊",
+    activity: ["Prepared the Health System Immersion presentation."],
+    learning: [
+      "Organised field experiences and observations into a structured presentation."
+    ],
+    takeaway: "Documentation helps communicate field learning clearly."
+  },
+
+  "2026-10-01": {
+    emotion: "😊",
+    activity: ["Continued preparing the HSI presentation."],
+    learning: [
+      "Worked on presenting field experiences and health-system observations clearly."
+    ],
+    takeaway: "A clear presentation communicates field learning effectively."
+  },
+
+  "2026-10-02": {
+    emotion: "😊",
+    activity: [
+      "Attended a Special Gram Sabha at Bela Panchayat, Bihta Block, on Gandhi Jayanti.",
+      "Nine themes were discussed, with a focus on Healthy Panchayat.",
+      "Discussions included institutional delivery, TB-Mukt Panchayat, Filaria prevention and management, and disability certificates."
+    ],
+    learning: [
+      "Learned how Panchayat-level discussions can address public health priorities.",
+      "Understood the importance of early TB identification and treatment.",
+      "Observed how Filaria awareness and disability certificates connect communities with services."
+    ],
+    takeaway: "Community institutions can improve public health awareness and access to services."
+  },
+
+  "2026-10-03": {
+    emotion: "😊",
+    activity: [
+      "Visited the Malaria Office.",
+      "Visited an AAM to inform the team about support for upcoming NBS activities."
+    ],
+    learning: [
+      "Learned about coordination between the Malaria Office and field-level health facilities."
+    ],
+    takeaway: "Advance communication helps health facilities prepare for field activities."
+  },
+
+  "2026-10-05": {
+    emotion: "😊",
+    activity: [
+      "Participated in HSI consolidation with fellows from Nawada, Nalanda, Gaya, Aurangabad, Patna and Rohtas."
+    ],
+    learning: [
+      "Reflected on my understanding of the health system.",
+      "Comparing experiences with other fellows helped me recognise my progress and build confidence."
+    ],
+    takeaway: "Reflection and peer learning strengthen understanding and confidence."
+  },
+
+  "2026-10-06": {
+    emotion: "😊",
+    activity: [
+      "Learned to prepare a presentation about district-level work on Filaria and Kala-azar."
+    ],
+    learning: [
+      "Learned how to organise information about district-level health activities into a presentation."
+    ],
+    takeaway: "Clear data presentation helps communicate public health activities."
+  },
+
+  "2026-10-07": {
+    emotion: "😊",
+    activity: ["Attended a Patna review meeting."],
+    learning: [
+      "Learned about the UDID portal and its relevance to disability-related services."
+    ],
+    takeaway: "Digital platforms can help improve awareness of available services."
+  },
+
+  "2026-10-08": {
+    emotion: "😊",
+    activity: [
+      "Visited the Malaria Office for IRS training provided to Senior Field Workers and Field Workers."
+    ],
+    learning: [
+      "Gained exposure to training related to Indoor Residual Spraying (IRS)."
+    ],
+    takeaway: "Technical training supports vector-control activities."
+  },
+
+  "2026-10-09": {
+    emotion: "😊",
+    activity: [
+      "Visited Phulwarisharif to collect RK39 test data.",
+      "Met the M&E Officer, MOIC and BCM."
+    ],
+    learning: [
+      "Learned about collecting and documenting RK39 test data.",
+      "Observed coordination with block-level health-system stakeholders."
+    ],
+    takeaway: "Accurate field data and stakeholder coordination support programme monitoring."
+  },
+
+  "2026-10-12": {
+    emotion: "😊",
+    activity: [
+      "Visited Danapur to coordinate licensing with stakeholders.",
+      "Reached around 2 PM but could not meet the concerned stakeholders."
+    ],
+    learning: [
+      "Learned the importance of time management during field visits.",
+      "Recognised the need to plan travel and departure times carefully."
+    ],
+    takeaway: "Plan travel time and confirm availability before field visits.",
+    challenge: "Could not meet the stakeholders because of the late arrival."
+  },
+
+  "2026-10-13": {
+    emotion: "😊 Satisfied",
+    activity: [
+      "Visited the DMO Office.",
+      "Discussed my fellowship journey and process with the DMO.",
+      "Attended NBS training."
+    ],
+    learning: [
+      "Reflecting on my journey helped me communicate my experiences confidently.",
+      "When I expressed concern about my Hindi, the DMO encouraged me: 'Your Hindi is good. Carry on.'",
+      "Positive encouragement can build confidence.",
+      "NBS training strengthened my understanding of the field process."
+    ],
+    takeaway: "Confidence grows when we recognise progress, accept encouragement and continue learning."
+  }
+};
+
+const start = new Date(2026, 8, 11, 12);
+const end = new Date(2026, 9, 13, 12);
+const dates = [];
+
+for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+  dates.push(
+    d.getFullYear() + "-" +
+    String(d.getMonth() + 1).padStart(2, "0") + "-" +
+    String(d.getDate()).padStart(2, "0")
+  );
+}
+
+function prettyDate(key) {
+  const d = new Date(key + "T12:00:00");
+  return d.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  });
+}
+
+function safe(value) {
+  return String(value).replace(/[&<>"']/g, ch => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  }[ch]));
+}
+
+function list(items) {
+  return "<ul>" + (items || []).map(x => "<li>" + safe(x) + "</li>").join("") + "</ul>";
+}
+
+function renderRecords(query = "") {
+  const box = document.getElementById("records");
+  box.innerHTML = "";
+
+  dates.slice().reverse().filter(key => {
+    const item = entries[key];
+    const searchable = [
+      key, prettyDate(key),
+      ...(item?.activity || []),
+      ...(item?.learning || []),
+      item?.takeaway || "",
+      item?.challenge || ""
+    ].join(" ").toLowerCase();
+
+    return searchable.includes(query.toLowerCase().trim());
+  }).forEach(key => {
+    const item = entries[key];
+    const card = document.createElement("details");
+    card.className = "day";
+
+    if (!item) {
+      card.innerHTML = `
+        <summary>${prettyDate(key)}</summary>
+        <p class="missing">No entry recorded for this date.</p>
+      `;
+    } else {
+      card.innerHTML = `
+        <summary>${prettyDate(key)}</summary>
+        <div class="emotion">Top Emotion: ${safe(item.emotion || "😊")}</div>
+
+        <h4>Field Visit & Activity</h4>
+        ${list(item.activity)}
+
+        <h4>Learning of the Day</h4>
+        ${list(item.learning)}
+
+        <h4>Key Takeaway</h4>
+        <div class="takeaway">${safe(item.takeaway || "Not recorded.")}</div>
+
+        ${item.challenge ? `
+          <h4>Challenges</h4>
+          <div class="challenge">${safe(item.challenge)}</div>
+        ` : ""}
+      `;
+    }
+
+    box.appendChild(card);
+  });
+
+  if (!box.children.length) {
+    box.innerHTML = "<p>No matching records found.</p>";
+  }
+}
+
+function drawDashboard() {
+  const recorded = dates.filter(d => entries[d]).length;
+  const missing = dates.length - recorded;
+  const percent = Math.round(recorded / dates.length * 100);
+
+  document.getElementById("total").textContent = dates.length;
+  document.getElementById("recorded").textContent = recorded;
+  document.getElementById("missing").textContent = missing;
+  document.getElementById("percentage").textContent = percent + "%";
+  document.getElementById("coverageText").textContent =
+    recorded + " of " + dates.length + " days recorded";
+
+  document.getElementById("circle").style.background =
+    `conic-gradient(#2fa7dc ${percent * 3.6}deg, #dce5ee 0deg)`;
+
+  const bars = document.getElementById("bars");
+  bars.innerHTML = "";
+
+  const max = Math.max(1, ...dates.map(d => entries[d]?.learning?.length || 0));
+
+  dates.forEach(key => {
+    const count = entries[key]?.learning?.length || 0;
+    const item = document.createElement("div");
+    item.className = "bar-item";
+    item.title = prettyDate(key) + ": " + count + " learning points";
+
+    item.innerHTML = `
+      <div class="bar" style="height:${Math.max(3, count / max * 130)}px"></div>
+      <span class="bar-label">${key.slice(8)}</span>
+    `;
+
+    bars.appendChild(item);
+  });
+}
+
+document.getElementById("search").addEventListener("input", e => {
+  renderRecords(e.target.value);
+});
+
+renderRecords();
+drawDashboard();
+</script>
+
+</body>
+  </html>
