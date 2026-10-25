@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -621,4 +620,238 @@
           "The intended stakeholder was unavailable, and the discussion provided limited information."
         ],
         learning: [
-          "A field visit may not always achieve 
+          "A field visit may not always achieve its planned objective.",
+          "It is important to identify an alternative contact or follow-up route.",
+          "Clear follow-up can help complete information gathering."
+        ],
+        takeaway: "When a plan does not work, I should stay adaptable and identify the next practical step."
+      },
+
+      {
+        date: "2026-10-15",
+        emotion: "Happy",
+        activities: [
+          "Planned a TAS-1 visit to GGSH.",
+          "Could not proceed with the school visit because the LT did not answer the call, preventing coordination."
+        ],
+        challenges: [
+          "Coordination with the LT could not be established."
+        ],
+        learning: [
+          "Confirmation before travel can prevent unnecessary delays.",
+          "Alternative contacts may help when the primary contact is unavailable.",
+          "Planning should include backup options."
+        ],
+        takeaway: "I should confirm field arrangements in advance and prepare alternatives for coordination challenges."
+      },
+
+      {
+        date: "2026-10-16",
+        emotion: "Normal",
+        activities: [
+          "Visited HWC Makdampur with Probali and Rajdeep.",
+          "Interacted with ANM Shila Ji about Filaria medicine availability and Kala-azar testing.",
+          "Followed up on TB-related coordination and service information."
+        ],
+        learning: [
+          "Speaking with frontline health workers helps me understand services available at the facility.",
+          "Different disease programmes require coordination and follow-up.",
+          "Asking focused questions helps collect useful information."
+        ],
+        takeaway: "Direct interaction with frontline workers helps build a practical understanding of health services."
+      },
+
+      {
+        date: "2026-10-22",
+        emotion: "Happy",
+        activities: [
+          "Received training with co-fellow Probali on data entry in the IHIP portal.",
+          "Visited GGSH with Probali and Rajdeep and practised IHIP data entry.",
+          "Met a patient affected by hydrocele."
+        ],
+        learning: [
+          "Practical data-entry experience improves familiarity with the IHIP portal.",
+          "Accurate reporting is important for public-health monitoring.",
+          "Patient interactions help connect reporting processes with real experiences."
+        ],
+        takeaway: "Combining digital practice with field exposure helps me better understand health-system processes."
+      },
+
+      {
+        date: "2026-10-23",
+        emotion: "Exhausted",
+        activities: [
+          "Attended a meeting at the Patna State Office about monthly activities.",
+          "Participated in a discussion about High Priority Villages.",
+          "Learned about a meeting in Jharkhand and discussed its planning."
+        ],
+        learning: [
+          "Monthly review helps align activities with priorities.",
+          "High Priority Villages require focused planning and coordination.",
+          "Planning an event or meeting requires clarity about responsibilities and timelines."
+        ],
+        takeaway: "Prioritization and organized planning help me manage multiple responsibilities more effectively."
+      },
+
+      {
+        date: "2026-10-24",
+        emotion: "Happy",
+        activities: [
+          "Created my Individual Development Plan (IDP).",
+          "Reflected on different capabilities and sub-capabilities under NB4.",
+          "Considered areas for personal development and continuous improvement."
+        ],
+        learning: [
+          "Self-reflection helps me identify strengths and areas for growth.",
+          "Breaking capabilities into sub-capabilities makes development more specific.",
+          "An IDP can help turn reflection into purposeful learning actions.",
+          "Personal growth requires regular practice and review."
+        ],
+        takeaway: "A meaningful development plan begins with honest reflection and consistent action."
+      }
+
+      /*
+      ============================================================
+      ADD YOUR NEXT ILD ENTRY HERE
+      ============================================================
+
+      Copy the example below, remove the comment marks around it,
+      and paste it immediately BEFORE the closing ]; of this array.
+
+      IMPORTANT:
+      - Add a comma after the previous record.
+      - Use the date format YYYY-MM-DD.
+      - Do not create another const learningRecords declaration.
+
+      {
+        date: "2026-10-26",
+        emotion: "Happy",
+        activities: [
+          "Write your field visit or activity here."
+        ],
+        challenges: [
+          "Write your challenge here, if any."
+        ],
+        learning: [
+          "Write your first learning.",
+          "Write your second learning.",
+          "Write your third learning."
+        ],
+        takeaway: "Write your key takeaway here."
+      }
+
+      ============================================================
+      */
+
+    ];
+
+    const recordsContainer = document.getElementById("records");
+    const searchInput = document.getElementById("searchInput");
+    const monthFilter = document.getElementById("monthFilter");
+    const sortOrder = document.getElementById("sortOrder");
+    const totalCount = document.getElementById("totalCount");
+    const emptyMessage = document.getElementById("emptyMessage");
+
+    function formatDate(dateString) {
+      const parts = dateString.split("-");
+      return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, function(char) {
+        const replacements = {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        };
+        return replacements[char];
+      });
+    }
+
+    function makeList(items) {
+      if (!Array.isArray(items) || items.length === 0) {
+        return "";
+      }
+
+      return `<ul>${items.map(item =>
+        `<li>${escapeHTML(item)}</li>`
+      ).join("")}</ul>`;
+    }
+
+    function renderRecords() {
+      const searchTerm = searchInput.value.trim().toLowerCase();
+      const selectedMonth = monthFilter.value;
+      const sort = sortOrder.value;
+
+      let filteredRecords = learningRecords.filter(record => {
+        const matchesMonth =
+          selectedMonth === "all" ||
+          record.date.startsWith(selectedMonth);
+
+        const searchableText = [
+          record.date,
+          formatDate(record.date),
+          record.emotion,
+          ...(record.activities || []),
+          ...(record.challenges || []),
+          ...(record.learning || []),
+          record.takeaway || ""
+        ].join(" ").toLowerCase();
+
+        const matchesSearch = searchableText.includes(searchTerm);
+
+        return matchesMonth && matchesSearch;
+      });
+
+      filteredRecords.sort((a, b) => {
+        if (sort === "oldest") {
+          return a.date.localeCompare(b.date);
+        }
+        return b.date.localeCompare(a.date);
+      });
+
+      totalCount.textContent = filteredRecords.length;
+
+      recordsContainer.innerHTML = filteredRecords.map(record => `
+        <article class="card">
+          <div class="card-top">
+            <h2>ILD – ${escapeHTML(formatDate(record.date))}</h2>
+            <span class="emotion">
+              ${escapeHTML(record.emotion)}
+            </span>
+          </div>
+
+          <h3>Field Visit & Activity</h3>
+          ${makeList(record.activities)}
+
+          ${record.challenges && record.challenges.length ? `
+            <h3>Challenges</h3>
+            ${makeList(record.challenges)}
+          ` : ""}
+
+          <h3>Learning of the Day</h3>
+          ${makeList(record.learning)}
+
+          <div class="takeaway">
+            <strong>Key Takeaway</strong>
+            ${escapeHTML(record.takeaway)}
+          </div>
+        </article>
+      `).join("");
+
+      emptyMessage.style.display =
+        filteredRecords.length === 0 ? "block" : "none";
+    }
+
+    searchInput.addEventListener("input", renderRecords);
+    monthFilter.addEventListener("change", renderRecords);
+    sortOrder.addEventListener("change", renderRecords);
+
+    renderRecords();
+  </script>
+
+</body>
+</html>
+
