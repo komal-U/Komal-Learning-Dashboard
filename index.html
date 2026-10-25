@@ -1,727 +1,624 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Komal Umak | Learning Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Individual Learning of the Day | Komal Umak</title>
 
-<style>
-:root {
-  --blue: #07558c;
-  --light-blue: #2fa7dc;
-  --background: #f2f7fc;
-  --white: #ffffff;
-  --text: #243447;
-  --green: #198754;
-  --orange: #f0a43c;
-}
+  <style>
+    :root {
+      --blue: #1456a0;
+      --light-blue: #eaf3ff;
+      --text: #243247;
+      --muted: #68778b;
+      --border: #dce5f0;
+      --background: #f4f7fb;
+      --white: #ffffff;
+    }
 
-* { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--background);
-  color: var(--text);
-}
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+    }
 
-header {
-  background: linear-gradient(135deg, #07558c, #168bc2);
-  color: white;
-  padding: 32px 15px;
-  text-align: center;
-}
+    header {
+      background: linear-gradient(135deg, #104786, #2679c8);
+      color: white;
+      padding: 36px 18px;
+      text-align: center;
+    }
 
-header h1 { margin: 0 0 10px; }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: clamp(24px, 5vw, 36px);
+    }
 
-header p { margin: 5px; }
+    header p {
+      margin: 5px 0;
+      opacity: 0.95;
+    }
 
-.container {
-  max-width: 1150px;
-  margin: 25px auto;
-  padding: 0 16px;
-}
+    .container {
+      width: min(1100px, 94%);
+      margin: 24px auto 45px;
+    }
 
-.panel {
-  background: white;
-  border-radius: 14px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 3px 12px #0000000c;
-}
+    .summary {
+      background: white;
+      padding: 22px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px #16385d12;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
 
-.panel h2, .panel h3 {
-  color: var(--blue);
-}
+    .summary h2 {
+      margin: 0;
+      color: var(--blue);
+      font-size: 18px;
+    }
 
-.summary {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  margin-bottom: 22px;
-}
+    .count {
+      font-size: 30px;
+      font-weight: bold;
+      color: var(--blue);
+    }
 
-.stat {
-  padding: 22px 12px;
-  text-align: center;
-  background: var(--light-blue);
-  color: white;
-  border-radius: 13px;
-}
+    .filters {
+      background: white;
+      padding: 18px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px #16385d12;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
 
-.stat h3 {
-  margin: 0;
-  font-size: 15px;
-  font-weight: normal;
-}
+    input, select {
+      width: 100%;
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      font-size: 15px;
+      background: white;
+      color: var(--text);
+    }
 
-.stat p {
-  margin: 12px 0 0;
-  font-size: 32px;
-  font-weight: bold;
-}
+    input:focus, select:focus {
+      outline: 2px solid #8bbcff;
+      border-color: var(--blue);
+    }
 
-.chart-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  align-items: center;
-}
+    #records {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
 
-.chart-layout .panel { text-align: center; }
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 21px;
+      box-shadow: 0 4px 14px #16385d0b;
+      min-width: 0;
+    }
 
-.progress-circle {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  margin: 20px auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: conic-gradient(
-    var(--light-blue) 0deg,
-    #dce5ee 0deg
-  );
-  position: relative;
-}
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding-bottom: 13px;
+      border-bottom: 1px solid #edf1f7;
+      margin-bottom: 14px;
+    }
 
-.progress-circle::before {
-  content: "";
-  position: absolute;
-  width: 135px;
-  height: 135px;
-  background: white;
-  border-radius: 50%;
-}
+    .card h2 {
+      color: var(--blue);
+      font-size: 19px;
+      margin: 0;
+    }
 
-.progress-text {
-  z-index: 1;
-  font-size: 24px;
-  font-weight: bold;
-  color: var(--blue);
-}
+    .emotion {
+      background: var(--light-blue);
+      color: #174e8c;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+    }
 
-.bar-chart {
-  display: flex;
-  align-items: end;
-  gap: 5px;
-  height: 180px;
-  padding: 10px 5px 0;
-  overflow-x: auto;
-  border-bottom: 1px solid #dce5ee;
-}
+    .card h3 {
+      font-size: 15px;
+      margin: 18px 0 7px;
+      color: #233e61;
+    }
 
-.bar-item {
-  min-width: 18px;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  flex-direction: column;
-  height: 100%;
-}
+    .card ul {
+      padding-left: 20px;
+      margin: 6px 0;
+    }
 
-.bar {
-  width: 100%;
-  max-width: 26px;
-  min-height: 3px;
-  background: var(--light-blue);
-  border-radius: 4px 4px 0 0;
-}
+    .card li {
+      margin-bottom: 7px;
+    }
 
-.bar-label {
-  font-size: 9px;
-  margin-top: 5px;
-  white-space: nowrap;
-  color: #536678;
-}
+    .takeaway {
+      margin-top: 17px;
+      background: #f0f6ff;
+      border-left: 4px solid #2679c8;
+      border-radius: 7px;
+      padding: 12px;
+    }
 
-.search {
-  width: 100%;
-  border: 1px solid #cbd7e2;
-  border-radius: 9px;
-  padding: 13px;
-  font-size: 16px;
-  margin-bottom: 18px;
-}
+    .takeaway strong {
+      display: block;
+      color: var(--blue);
+      margin-bottom: 4px;
+    }
 
-.day {
-  background: white;
-  border-radius: 12px;
-  border-left: 5px solid var(--light-blue);
-  margin-bottom: 14px;
-  padding: 17px;
-  box-shadow: 0 3px 10px #00000009;
-}
+    .empty {
+      display: none;
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      text-align: center;
+      color: var(--muted);
+    }
 
-.day summary {
-  color: var(--blue);
-  font-size: 17px;
-  font-weight: bold;
-  cursor: pointer;
-}
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 13px;
+    }
 
-.emotion {
-  display: inline-block;
-  background: #e7f5fc;
-  padding: 7px 12px;
-  border-radius: 18px;
-  margin: 15px 0;
-  font-size: 13px;
-}
+    @media (max-width: 700px) {
+      .filters {
+        grid-template-columns: 1fr;
+      }
 
-.day h4 {
-  color: #0879b0;
-  margin: 16px 0 7px;
-}
+      #records {
+        grid-template-columns: 1fr;
+      }
 
-.day ul {
-  padding-left: 22px;
-  line-height: 1.7;
-}
+      header {
+        padding: 28px 15px;
+      }
 
-.takeaway {
-  background: #eaf7ef;
-  padding: 13px;
-  border-radius: 8px;
-  line-height: 1.6;
-}
-
-.challenge {
-  background: #fff5e7;
-  padding: 13px;
-  border-radius: 8px;
-  line-height: 1.6;
-}
-
-.missing {
-  color: #687887;
-  font-style: italic;
-  line-height: 1.6;
-}
-
-footer {
-  text-align: center;
-  color: #687887;
-  padding: 25px;
-  font-size: 13px;
-}
-
-@media(max-width: 700px) {
-  .summary { grid-template-columns: 1fr; }
-  .chart-layout { grid-template-columns: 1fr; }
-  header h1 { font-size: 23px; }
-}
-</style>
+      .card {
+        padding: 17px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-  <h1>Individual Learning Dashboard</h1>
-  <p>Komal Umak | Gandhi Fellow | Batch 19</p>
-  <p>Piramal Swasthya, Patna</p>
-</header>
+  <header>
+    <h1>Individual Learning of the Day</h1>
+    <p>Gandhi Fellowship | Batch 19</p>
+    <p>Daily Reflections, Experiences & Growth</p>
+  </header>
 
-<main class="container">
+  <main class="container">
 
-  <section class="panel">
-    <h2>My Learning Journey</h2>
-    <p><b>Reporting period:</b> 11 September – 13 October 2026</p>
-    <p>
-      A record of my field experiences, learning, reflections,
-      challenges and key takeaways during my fellowship journey.
-    </p>
-  </section>
-
-  <section class="summary">
-    <div class="stat">
-      <h3>Total Days</h3>
-      <p id="total">33</p>
-    </div>
-
-    <div class="stat">
-      <h3>Learning Records</h3>
-      <p id="recorded">0</p>
-    </div>
-
-    <div class="stat">
-      <h3>Awaiting Entry</h3>
-      <p id="missing">0</p>
-    </div>
-  </section>
-
-  <section class="chart-layout">
-
-    <div class="panel">
-      <h3>Daily Learning Overview</h3>
-      <div class="bar-chart" id="bars"></div>
-      <p style="font-size:12px;color:#687887">
-        Hover over a bar to see the date and learning-point count.
-      </p>
-    </div>
-
-    <div class="panel">
-      <h3>Record Completion</h3>
-      <div class="progress-circle" id="circle">
-        <div class="progress-text" id="percentage">0%</div>
+    <section class="summary">
+      <div>
+        <h2>My Learning Journey</h2>
+        <p style="margin:5px 0 0;color:#68778b">
+          Reflecting on experiences and turning them into learning.
+        </p>
       </div>
-      <p id="coverageText">0 of 33 days recorded</p>
-      <p>Blue = recorded entries</p>
-      <p>Grey = awaiting entry</p>
+
+      <div>
+        <div class="count" id="totalCount">0</div>
+        <div style="color:#68778b;font-size:13px">ILD Entries</div>
+      </div>
+    </section>
+
+    <section class="filters">
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Search activities, learning or dates..."
+        aria-label="Search ILD entries"
+      >
+
+      <select id="monthFilter" aria-label="Filter by month">
+        <option value="all">All Months</option>
+        <option value="2026-09">September 2026</option>
+        <option value="2026-10">October 2026</option>
+      </select>
+
+      <select id="sortOrder" aria-label="Sort entries">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+      </select>
+    </section>
+
+    <section id="records" aria-live="polite"></section>
+
+    <div class="empty" id="emptyMessage">
+      No matching ILD entries found. Try another search or month.
     </div>
 
-  </section>
+  </main>
 
-  <h2 style="color:#07558c">Daily Learning Records</h2>
+  <footer>
+    Individual Learning of the Day | Gandhi Fellowship | Batch 19
+  </footer>
 
-  <input
-    id="search"
-    class="search"
-    type="search"
-    placeholder="Search dates, activities or learning..."
-  >
+  <script>
+    const learningRecords = [
 
-  <div id="records"></div>
+      {
+        date: "2026-09-11",
+        emotion: "Happy",
+        activities: [
+          "Supported TAS-1 activities at GGSH, Patna.",
+          "Observed the importance of coordination with school and health-facility stakeholders."
+        ],
+        learning: [
+          "Field activities require timely communication and planning.",
+          "Coordination with stakeholders helps in conducting TAS-1 smoothly.",
+          "Flexibility is important when working in real field situations."
+        ],
+        takeaway: "Effective fieldwork depends on preparation, communication and teamwork."
+      },
 
-</main>
+      {
+        date: "2026-09-15",
+        emotion: "Happy",
+        activities: [
+          "Visited GGSH for TAS-1-related work and awareness activities.",
+          "Discussed awareness about Dengue, Malaria, Filaria and Kala-azar."
+        ],
+        learning: [
+          "Health awareness helps people understand disease prevention.",
+          "Clear communication is important while sharing health information.",
+          "Coordination supports better implementation of field activities."
+        ],
+        takeaway: "Awareness becomes more effective when information is simple, clear and relevant."
+      },
 
-<footer>
-  Individual Learning of the Day | Gandhi Fellowship Batch 19
-</footer>
+      {
+        date: "2026-09-16",
+        emotion: "Happy",
+        activities: [
+          "Visited AAM Kurkuri.",
+          "Collected information related to the UDID number of a person affected by Filaria."
+        ],
+        learning: [
+          "Patient-related information must be collected carefully.",
+          "Understanding available support systems is important for affected people.",
+          "Respectful communication helps during field interactions."
+        ],
+        takeaway: "Accurate information and respectful engagement are essential in community health work."
+      },
 
-<script>
-const entries = {
-  "2026-09-16": {
-    emotion: "😊",
-    activity: [
-      "Visited AAM Kurkuri to collect the UDID number of a person affected by Filaria."
-    ],
-    learning: [
-      "Learned the importance of documentation for people affected by Filaria.",
-      "Observed the management of the health facility during my first visit to this AAM."
-    ],
-    takeaway: "Accurate information and proper documentation help connect people with relevant services."
-  },
+      {
+        date: "2026-09-18",
+        emotion: "Happy",
+        activities: [
+          "Participated in a discussion about gaps in NBS activities with the PL.",
+          "Reviewed important aspects of health-facility quality and coordination."
+        ],
+        learning: [
+          "Identifying gaps is the first step towards improvement.",
+          "Quality healthcare includes patient rights, cleanliness, infection control and clinical care.",
+          "Regular review and follow-up help improve implementation."
+        ],
+        takeaway: "Observation and gap identification help turn field experiences into improvement actions."
+      },
 
-  "2026-09-18": {
-    emotion: "😊",
-    activity: [
-      "Participated in discussions related to NQAS and health-system improvement."
-    ],
-    learning: [
-      "NQAS focuses on improving healthcare quality.",
-      "Important areas include patient rights, cleanliness, water, clinical care, infection control, quality management and outcomes.",
-      "Quality assessment takes place at different levels."
-    ],
-    takeaway: "Quality improvement requires attention to patient experience and healthcare standards.",
-    challenge: "Further clarity was needed on some aspects of NQAS."
-  },
+      {
+        date: "2026-09-20",
+        emotion: "Happy",
+        activities: [
+          "Visited GGSH for TAS-1-related support.",
+          "Observed field coordination and the importance of following the planned process."
+        ],
+        learning: [
+          "Following the correct process improves the reliability of field activities.",
+          "Coordination with the concerned team is essential.",
+          "Being adaptable helps when field situations change."
+        ],
+        takeaway: "A structured approach and teamwork support effective field implementation."
+      },
 
-  "2026-09-23": {
-    emotion: "😊",
-    activity: ["Revised communicable diseases."],
-    learning: [
-      "Revisited key concepts related to communicable diseases."
-    ],
-    takeaway: "Regular revision strengthens understanding of health topics."
-  },
+      {
+        date: "2026-09-21",
+        emotion: "Happy",
+        activities: [
+          "Visited GGSH and discussed stakeholder coordination with the PL.",
+          "Learned about coordination requirements related to field activities."
+        ],
+        learning: [
+          "Stakeholder engagement requires clarity about roles and responsibilities.",
+          "Professional communication helps build working relationships.",
+          "Follow-up is important when coordination involves multiple people."
+        ],
+        takeaway: "Influence and collaboration grow through clear communication and consistent follow-up."
+      },
 
-  "2026-09-24": {
-    emotion: "😊",
-    activity: ["Attended a Patna office meeting on IHIP and monthly planning."],
-    learning: [
-      "Learned about the IHIP portal.",
-      "Understood the importance of proper monthly planning."
-    ],
-    takeaway: "Planning and accurate portal-related work support effective health-system activities."
-  },
+      {
+        date: "2026-09-22",
+        emotion: "Happy",
+        activities: [
+          "Visited GGSH for TAS-1-related activities.",
+          "Received guidance from the state team."
+        ],
+        learning: [
+          "Guidance from experienced team members helps improve implementation.",
+          "Practical exposure strengthens conceptual understanding.",
+          "Questions and clarification support continuous learning."
+        ],
+        takeaway: "Learning improves when I combine practical experience with feedback and reflection."
+      },
 
-  "2026-09-25": {
-    emotion: "😊",
-    activity: ["Participated in monthly planning activities."],
-    learning: [
-      "Learned about preparing and organising monthly plans."
-    ],
-    takeaway: "A structured plan helps organise priorities and field responsibilities."
-  },
+      {
+        date: "2026-09-23",
+        emotion: "Happy",
+        activities: [
+          "Revised the topic of communicable diseases."
+        ],
+        learning: [
+          "Communicable diseases can spread through different routes.",
+          "Prevention depends on awareness, timely diagnosis and appropriate action.",
+          "Revising concepts helps connect theoretical knowledge with fieldwork."
+        ],
+        takeaway: "Strong subject knowledge helps me communicate health information more confidently."
+      },
 
-  "2026-09-28": {
-    emotion: "😊 Happy",
-    activity: [
-      "Visited Digha for Night Blood Survey (NBS).",
-      "Experienced the practical implementation of NBS for the first time."
-    ],
-    learning: [
-      "Understood how the field process connects with the training received.",
-      "Observed good community participation on the first day."
-    ],
-    takeaway: "Community participation is important for effective field implementation."
-  },
+      {
+        date: "2026-09-24",
+        emotion: "Happy",
+        activities: [
+          "Worked on learning related to the IHIP portal at the Patna office.",
+          "Participated in monthly planning activities."
+        ],
+        learning: [
+          "Digital health portals support reporting and information management.",
+          "Planning helps clarify priorities and responsibilities.",
+          "Accurate data entry is important for reliable reporting."
+        ],
+        takeaway: "Digital skills and structured planning are valuable for effective health-system work."
+      },
 
-  "2026-09-29": {
-    emotion: "😊",
-    activity: [
-      "Continued NBS activities at Digha.",
-      "The State Team visited the field."
-    ],
-    learning: [
-      "Learned about selecting an appropriate lancet.",
-      "Understood the importance of community engagement.",
-      "When people do not come to the designated location, the LT or team may need to approach households."
-    ],
-    takeaway: "Field teams need to adapt their approach to encourage participation."
-  },
+      {
+        date: "2026-09-25",
+        emotion: "Happy",
+        activities: [
+          "Participated in monthly planning and reviewed upcoming activities."
+        ],
+        learning: [
+          "Planning helps organize tasks according to priorities.",
+          "Clear timelines support accountability.",
+          "Reviewing activities helps identify what needs follow-up."
+        ],
+        takeaway: "A clear plan makes daily work more focused and manageable."
+      },
 
-  "2026-09-30": {
-    emotion: "😊",
-    activity: ["Prepared the Health System Immersion presentation."],
-    learning: [
-      "Organised field experiences and observations into a structured presentation."
-    ],
-    takeaway: "Documentation helps communicate field learning clearly."
-  },
+      {
+        date: "2026-09-28",
+        emotion: "Happy",
+        activities: [
+          "Participated in NBS-related fieldwork at Digha.",
+          "Observed community participation and engagement."
+        ],
+        learning: [
+          "Community participation is important for successful field activities.",
+          "People may need clear explanations before agreeing to participate.",
+          "Listening to community concerns can improve engagement."
+        ],
+        takeaway: "Trust and communication are important for meaningful community participation."
+      },
 
-  "2026-10-01": {
-    emotion: "😊",
-    activity: ["Continued preparing the HSI presentation."],
-    learning: [
-      "Worked on presenting field experiences and health-system observations clearly."
-    ],
-    takeaway: "A clear presentation communicates field learning effectively."
-  },
+      {
+        date: "2026-09-29",
+        emotion: "Happy",
+        activities: [
+          "Continued NBS-related fieldwork at Digha with the state team.",
+          "Learned about lancet selection and door-to-door approaches when community participation is limited."
+        ],
+        learning: [
+          "Correct procedures and equipment selection are important during fieldwork.",
+          "Door-to-door engagement may help reach people who do not come to a common location.",
+          "Field strategies should respond to the needs of the community."
+        ],
+        takeaway: "Adaptability and proper procedures help improve the reach and quality of field activities."
+      },
 
-  "2026-10-02": {
-    emotion: "😊",
-    activity: [
-      "Attended a Special Gram Sabha at Bela Panchayat, Bihta Block, on Gandhi Jayanti.",
-      "Nine themes were discussed, with a focus on Healthy Panchayat.",
-      "Discussions included institutional delivery, TB-Mukt Panchayat, Filaria prevention and management, and disability certificates."
-    ],
-    learning: [
-      "Learned how Panchayat-level discussions can address public health priorities.",
-      "Understood the importance of early TB identification and treatment.",
-      "Observed how Filaria awareness and disability certificates connect communities with services."
-    ],
-    takeaway: "Community institutions can improve public health awareness and access to services."
-  },
+      {
+        date: "2026-09-30",
+        emotion: "Happy",
+        activities: [
+          "Worked on preparing the Health System Immersion (HSI) presentation."
+        ],
+        learning: [
+          "Organizing field experiences helps identify important insights.",
+          "A clear presentation should communicate observations and learning in a structured way.",
+          "Reflection helps connect individual experiences with the wider health system."
+        ],
+        takeaway: "Presenting field experiences clearly helps communicate learning and observations."
+      },
 
-  "2026-10-03": {
-    emotion: "😊",
-    activity: [
-      "Visited the Malaria Office.",
-      "Visited an AAM to inform the team about support for upcoming NBS activities."
-    ],
-    learning: [
-      "Learned about coordination between the Malaria Office and field-level health facilities."
-    ],
-    takeaway: "Advance communication helps health facilities prepare for field activities."
-  },
+      {
+        date: "2026-10-01",
+        emotion: "Happy",
+        activities: [
+          "Continued preparing the HSI presentation."
+        ],
+        learning: [
+          "Consistency is important when completing a detailed task.",
+          "Organizing information improves the clarity of a presentation.",
+          "Reviewing content helps identify missing details."
+        ],
+        takeaway: "Regular review and structured documentation improve the quality of my work."
+      },
 
-  "2026-10-05": {
-    emotion: "😊",
-    activity: [
-      "Participated in HSI consolidation with fellows from Nawada, Nalanda, Gaya, Aurangabad, Patna and Rohtas."
-    ],
-    learning: [
-      "Reflected on my understanding of the health system.",
-      "Comparing experiences with other fellows helped me recognise my progress and build confidence."
-    ],
-    takeaway: "Reflection and peer learning strengthen understanding and confidence."
-  },
+      {
+        date: "2026-10-02",
+        emotion: "Happy",
+        activities: [
+          "Participated in the Special Gram Sabha at Bela Panchayat, Bihta Block.",
+          "Observed discussions around the nine themes, with emphasis on Healthy Panchayat, institutional delivery, TB-Mukt Panchayat, Filaria and disability certificates."
+        ],
+        learning: [
+          "Gram Sabha platforms can support community awareness and collective action.",
+          "Health priorities are connected with broader Panchayat development goals.",
+          "Community participation helps bring local issues into public discussion."
+        ],
+        takeaway: "Community platforms can strengthen collective responsibility for health and development."
+      },
 
-  "2026-10-06": {
-    emotion: "😊",
-    activity: [
-      "Learned to prepare a presentation about district-level work on Filaria and Kala-azar."
-    ],
-    learning: [
-      "Learned how to organise information about district-level health activities into a presentation."
-    ],
-    takeaway: "Clear data presentation helps communicate public health activities."
-  },
+      {
+        date: "2026-10-03",
+        emotion: "Happy",
+        activities: [
+          "Visited the Malaria Office and AAM for coordination and support related to upcoming NBS activities."
+        ],
+        learning: [
+          "Advance coordination helps prepare for field activities.",
+          "Communicating responsibilities clearly can reduce confusion.",
+          "Following up with stakeholders supports implementation."
+        ],
+        takeaway: "Timely coordination helps ensure that field activities are better prepared."
+      },
 
-  "2026-10-07": {
-    emotion: "😊",
-    activity: ["Attended a Patna review meeting."],
-    learning: [
-      "Learned about the UDID portal and its relevance to disability-related services."
-    ],
-    takeaway: "Digital platforms can help improve awareness of available services."
-  },
+      {
+        date: "2026-10-05",
+        emotion: "Happy",
+        activities: [
+          "Participated in HSI consolidation with fellows from Nawada, Nalanda, Gaya, Aurangabad, Patna and Rohtas."
+        ],
+        learning: [
+          "Sharing experiences helps broaden my understanding of the health system.",
+          "Different districts may face different implementation challenges.",
+          "Peer learning can build confidence and improve reflection."
+        ],
+        takeaway: "Learning from others' experiences helps me see challenges from multiple perspectives."
+      },
 
-  "2026-10-08": {
-    emotion: "😊",
-    activity: [
-      "Visited the Malaria Office for IRS training provided to Senior Field Workers and Field Workers."
-    ],
-    learning: [
-      "Gained exposure to training related to Indoor Residual Spraying (IRS)."
-    ],
-    takeaway: "Technical training supports vector-control activities."
-  },
+      {
+        date: "2026-10-06",
+        emotion: "Happy",
+        activities: [
+          "Worked on presenting district-level work related to Filaria and Kala-azar."
+        ],
+        learning: [
+          "Presenting fieldwork requires clear organization of information.",
+          "Disease-specific knowledge helps explain the purpose of activities.",
+          "Reflection supports better communication of field experiences."
+        ],
+        takeaway: "Clear documentation helps communicate the value and progress of fieldwork."
+      },
 
-  "2026-10-09": {
-    emotion: "😊",
-    activity: [
-      "Visited Phulwarisharif to collect RK39 test data.",
-      "Met the M&E Officer, MOIC and BCM."
-    ],
-    learning: [
-      "Learned about collecting and documenting RK39 test data.",
-      "Observed coordination with block-level health-system stakeholders."
-    ],
-    takeaway: "Accurate field data and stakeholder coordination support programme monitoring."
-  },
+      {
+        date: "2026-10-07",
+        emotion: "Happy",
+        activities: [
+          "Participated in a review meeting at the Patna office.",
+          "Learned about the UDID portal."
+        ],
+        learning: [
+          "Review meetings help track progress and identify gaps.",
+          "Understanding digital portals can support people in accessing relevant services.",
+          "Clarifying processes improves my ability to support field activities."
+        ],
+        takeaway: "Review and digital learning both contribute to better coordination and service support."
+      },
 
-  "2026-10-12": {
-    emotion: "😊",
-    activity: [
-      "Visited Danapur to coordinate licensing with stakeholders.",
-      "Reached around 2 PM but could not meet the concerned stakeholders."
-    ],
-    learning: [
-      "Learned the importance of time management during field visits.",
-      "Recognised the need to plan travel and departure times carefully."
-    ],
-    takeaway: "Plan travel time and confirm availability before field visits.",
-    challenge: "Could not meet the stakeholders because of the late arrival."
-  },
+      {
+        date: "2026-10-08",
+        emotion: "Happy",
+        activities: [
+          "Attended IRS training at the Malaria Office for Senior Field Workers and Field Workers."
+        ],
+        learning: [
+          "Training helps improve understanding of field-level implementation.",
+          "Clear instructions are important when communicating technical processes.",
+          "Learning from technical teams supports more informed field engagement."
+        ],
+        takeaway: "Technical training strengthens my understanding of public-health activities."
+      },
 
-  "2026-10-13": {
-    emotion: "😊 Satisfied",
-    activity: [
-      "Visited the DMO Office.",
-      "Discussed my fellowship journey and process with the DMO.",
-      "Attended NBS training."
-    ],
-    learning: [
-      "Reflecting on my journey helped me communicate my experiences confidently.",
-      "When I expressed concern about my Hindi, the DMO encouraged me: 'Your Hindi is good. Carry on.'",
-      "Positive encouragement can build confidence.",
-      "NBS training strengthened my understanding of the field process."
-    ],
-    takeaway: "Confidence grows when we recognise progress, accept encouragement and continue learning."
-  },
-  {
-    date: "2026-10-14",
-    title: "Individual Learning of the Day",
-    emotion: "😊 Happy",
-    activities: [
-        "Visited Danapur PHC along with my co-fellows, Probali and Rajdeep.",
-        "Planned to meet the MOIC but could not meet her.",
-        "Interacted with Bada Babu and enquired about Filaria and Kala-azar-related activities.",
-        "The response received was limited, and we could not gather as much information as expected.",
-        "Sonu Ji will coordinate with us to support further communication and information gathering."
-    ],
-    challenges: [
-        "Could not meet the MOIC.",
-        "Received limited information about Filaria and Kala-azar."
-    ],
-    learning: [
-        "Learned that meeting the right stakeholders is important for collecting accurate information.",
-        "Understood that effective coordination and follow-up are necessary to achieve field visit objectives.",
-        "Realized that building communication with health facility staff can help improve access to information."
-    ],
-    takeaway: "Effective stakeholder coordination and regular follow-up are essential for gathering information and achieving field visit objectives."
-},
+      {
+        date: "2026-10-09",
+        emotion: "Happy",
+        activities: [
+          "Visited Phulwarisharif to collect RK39 test data.",
+          "Interacted with the M&E Officer, MOIC and BCM."
+        ],
+        learning: [
+          "Data collection requires accuracy and verification.",
+          "Interacting with different health-system stakeholders helps clarify processes.",
+          "Professional communication supports access to relevant information."
+        ],
+        takeaway: "Accurate data and stakeholder coordination are essential for understanding field progress."
+      },
 
-{
-    date: "2026-10-15",
-    title: "Individual Learning of the Day",
-    emotion: "😊 Happy",
-    activities: [
-        "Planned to visit GGSH for TAS-1 activities.",
-        "Tried to coordinate with the Laboratory Technician (LT) to facilitate the school visit.",
-        "The LT did not receive our calls, so we could not coordinate the visit and proceed to the school."
-    ],
-    challenges: [
-        "Unable to establish contact with the LT.",
-        "The lack of coordination affected the planned TAS-1 activity."
-    ],
-    learning: [
-        "Learned that timely communication with stakeholders is essential for successful field activities.",
-        "Understood the importance of confirming coordination before leaving for a field visit.",
-        "Realized that having an alternative contact or backup plan can help manage unexpected challenges."
-    ],
-    takeaway: "Proper coordination, timely communication, and backup planning are essential to ensure that field activities proceed smoothly."
-},
+      {
+        date: "2026-10-12",
+        emotion: "Happy",
+        activities: [
+          "Visited Danapur for stakeholder coordination related to licensing.",
+          "Reached around 2 PM and could not meet the intended stakeholders."
+        ],
+        challenges: [
+          "The timing of the visit limited the opportunity to meet stakeholders."
+        ],
+        learning: [
+          "Travel time and stakeholder availability must be considered during planning.",
+          "Leaving early can improve the chances of completing planned meetings.",
+          "A backup plan can help when a meeting cannot happen."
+        ],
+        takeaway: "Time management and advance planning are essential for effective field visits."
+      },
 
-{
-    date: "2026-10-16",
-    title: "Individual Learning of the Day",
-    emotion: "😊 Happy",
-    activities: [
-        "Visited the Health and Wellness Centre (HWC), Makdampur, along with my co-fellows, Probali and Rajdeep.",
-        "Interacted with an ANM working on a contractual basis.",
-        "Enquired about the availability of Filaria medicines.",
-        "Asked about Kala-azar testing services and the related health services available.",
-        "Interacted with the person responsible for coordinating TB-related activities and gathered information about TB."
-    ],
-    challenges: [],
-    learning: [
-        "Gained a better understanding of the availability of Filaria medicines at the health facility.",
-        "Learned about Kala-azar testing services and the importance of understanding services available at the facility level.",
-        "Understood the importance of interacting with frontline health workers to gather information about different health programmes.",
-        "Recognized that field visits provide opportunities to understand the implementation of health services and identify areas requiring further follow-up."
-    ],
-    takeaway: "Regular interaction with frontline health workers helps strengthen understanding of health services, improve coordination, and identify areas requiring further follow-up."
-}
-};
+      {
+        date: "2026-10-13",
+        emotion: "Happy",
+        activities: [
+          "Visited the DMO office and discussed the fellowship process.",
+          "Attended NBS training and strengthened my understanding of the process.",
+          "Received encouragement from the DMO regarding my Hindi communication."
+        ],
+        learning: [
+          "Confidence grows when I continue practising instead of focusing only on limitations.",
+          "Feedback from others can help me recognize my progress.",
+          "Training strengthens understanding of technical processes."
+        ],
+        takeaway: "I should keep practising, seek feedback and continue improving my communication skills."
+      },
 
-const start = new Date(2026, 8, 11, 12);
-const end = new Date(2026, 9, 13, 12);
-const dates = [];
-
-for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-  dates.push(
-    d.getFullYear() + "-" +
-    String(d.getMonth() + 1).padStart(2, "0") + "-" +
-    String(d.getDate()).padStart(2, "0")
-  );
-}
-
-function prettyDate(key) {
-  const d = new Date(key + "T12:00:00");
-  return d.toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric"
-  });
-}
-
-function safe(value) {
-  return String(value).replace(/[&<>"']/g, ch => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  }[ch]));
-}
-
-function list(items) {
-  return "<ul>" + (items || []).map(x => "<li>" + safe(x) + "</li>").join("") + "</ul>";
-}
-
-function renderRecords(query = "") {
-  const box = document.getElementById("records");
-  box.innerHTML = "";
-
-  dates.slice().reverse().filter(key => {
-    const item = entries[key];
-    const searchable = [
-      key, prettyDate(key),
-      ...(item?.activity || []),
-      ...(item?.learning || []),
-      item?.takeaway || "",
-      item?.challenge || ""
-    ].join(" ").toLowerCase();
-
-    return searchable.includes(query.toLowerCase().trim());
-  }).forEach(key => {
-    const item = entries[key];
-    const card = document.createElement("details");
-    card.className = "day";
-
-    if (!item) {
-      card.innerHTML = `
-        <summary>${prettyDate(key)}</summary>
-        <p class="missing">No entry recorded for this date.</p>
-      `;
-    } else {
-      card.innerHTML = `
-        <summary>${prettyDate(key)}</summary>
-        <div class="emotion">Top Emotion: ${safe(item.emotion || "😊")}</div>
-
-        <h4>Field Visit & Activity</h4>
-        ${list(item.activity)}
-
-        <h4>Learning of the Day</h4>
-        ${list(item.learning)}
-
-        <h4>Key Takeaway</h4>
-        <div class="takeaway">${safe(item.takeaway || "Not recorded.")}</div>
-
-        ${item.challenge ? `
-          <h4>Challenges</h4>
-          <div class="challenge">${safe(item.challenge)}</div>
-        ` : ""}
-      `;
-    }
-
-    box.appendChild(card);
-  });
-
-  if (!box.children.length) {
-    box.innerHTML = "<p>No matching records found.</p>";
-  }
-}
-
-function drawDashboard() {
-  const recorded = dates.filter(d => entries[d]).length;
-  const missing = dates.length - recorded;
-  const percent = Math.round(recorded / dates.length * 100);
-
-  document.getElementById("total").textContent = dates.length;
-  document.getElementById("recorded").textContent = recorded;
-  document.getElementById("missing").textContent = missing;
-  document.getElementById("percentage").textContent = percent + "%";
-  document.getElementById("coverageText").textContent =
-    recorded + " of " + dates.length + " days recorded";
-
-  document.getElementById("circle").style.background =
-    `conic-gradient(#2fa7dc ${percent * 3.6}deg, #dce5ee 0deg)`;
-
-  const bars = document.getElementById("bars");
-  bars.innerHTML = "";
-
-  const max = Math.max(1, ...dates.map(d => entries[d]?.learning?.length || 0));
-
-  dates.forEach(key => {
-    const count = entries[key]?.learning?.length || 0;
-    const item = document.createElement("div");
-    item.className = "bar-item";
-    item.title = prettyDate(key) + ": " + count + " learning points";
-
-    item.innerHTML = `
-      <div class="bar" style="height:${Math.max(3, count / max * 130)}px"></div>
-      <span class="bar-label">${key.slice(8)}</span>
-    `;
-
-    bars.appendChild(item);
-  });
-}
-
-document.getElementById("search").addEventListener("input", e => {
-  renderRecords(e.target.value);
-});
-
-renderRecords();
-drawDashboard();
-</script>
-
-</body>
-  </html>
-
-  
+      {
+        date: "2026-10-14",
+        emotion: "Happy",
+        activities: [
+          "Visited Danapur PHC with Probali and Rajdeep to meet the MOIC, but could not meet her.",
+          "Spoke with Bada Babu about Filaria and Kala-azar, but received limited information.",
+          "Learned that Sonu Ji would coordinate further."
+        ],
+        challenges: [
+          "The intended stakeholder was unavailable, and the discussion provided limited information."
+        ],
+        learning: [
+          "A field visit may not always achieve 
